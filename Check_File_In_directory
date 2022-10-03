@@ -1,0 +1,13 @@
+echo -n "Please enter Directory name you wish to search: "
+read dir
+
+for filename in "/home/me/Desktop/$dir"/*
+
+do
+
+    if (-F $filename)
+    then 
+    echo $filename
+
+    fi
+done
