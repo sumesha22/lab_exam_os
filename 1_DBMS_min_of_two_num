@@ -1,0 +1,23 @@
+DECLARE
+a number;
+b number;
+c number;
+d number;
+PROCEDURE findmin(x IN number, y IN number, d IN number, z OUT number) IS
+BEGIN
+If x<y and x<d then
+z:=x;
+Elsif
+y<d then
+z:=y;
+ELSE
+z:=d;
+END IF;
+END;
+BEGIN
+a:=21;
+b:=45;
+c:=36;
+Findmin(a,b,c,d);
+dbms_output.put_line('minimum is '||d);
+END;
