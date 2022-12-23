@@ -1,0 +1,15 @@
+DECLARE
+a number;
+b number;
+c number;
+
+PROCEDURE area(x IN number, y IN number, z OUT number) IS
+BEGIN
+Z:=0.5*x*y;
+END;
+BEGIN
+a:=2;
+b:=5;
+area(a,b,c);
+dbms_output.put_line('Area of triangle is'||c);
+END;
