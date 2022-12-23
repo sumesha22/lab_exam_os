@@ -1,0 +1,38 @@
+CREATE TABLE CUSTOMERS(ID VARCHAR(10),NAME VARCHAR(10),AGE INT,ADDRESS VARCHAR(10), SALARY INT);
+INSERT INTO CUSTOMERS VALUES('210001','Ramesh',32,'Ahmedabad', 2000.00)
+INSERT INTO CUSTOMERS VALUES('2','Khilan',25,'Delhi',1500.00)
+INSERT INTO CUSTOMERS VALUES('3','kaushik',23,'Kota',2000.00)
+INSERT INTO CUSTOMERS VALUES('4','Chaitali',25,'Mumbai',6500.00)
+INSERT INTO CUSTOMERS VALUES('5','Hardik',27,'Bhopal',8500.00)
+INSERT INTO CUSTOMERS VALUES('6','Komal',22,'MP',4500.00)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+Select * from customers; 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE OR REPLACE TRIGGER display_salary_changes1 
+BEFORE DELETE OR INSERT OR UPDATE ON customers 
+FOR EACH ROW 
+WHEN (NEW.ID > 0) 
+DECLARE 
+   sal_diff number; 
+BEGIN 
+   sal_diff := :NEW.salary  - :OLD.salary; 
+   dbms_output.put_line('Old salary: ' || :OLD.salary); 
+   dbms_output.put_line('New salary: ' || :NEW.salary); 
+   dbms_output.put_line('Salary difference: ' || sal_diff); 
+END;
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+When a record is created in the CUSTOMERS table, the above create trigger, display_salary_changes1 will be fired and it will display the following result −
+
+INSERT INTO CUSTOMERS (ID,NAME,AGE,ADDRESS,SALARY) 
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Because this is a new record, old salary is not available and the above result comes as null. Let us now perform one more DML operation on the CUSTOMERS table. 
+The UPDATE statement will update an existing record in the table −
+
+UPDATE customers 
+SET salary = salary + 500 
+WHERE id = 2; 
+
