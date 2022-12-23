@@ -1,0 +1,24 @@
+DECLARE
+num number:=1;
+BEGIN
+while num<=10
+LOOP
+DBMS_OUTPUT.PUT_LINE(num);
+num:=num+1;
+END LOOP;
+END
+Write a PL/SQL program to find sum of number of digits.
+DECLARE
+	n	 INTEGER;
+	temp_sum INTEGER;
+	r	 INTEGER;
+BEGIN
+	n := 123456;
+	temp_sum := 0;
+	WHILE n <> 0 LOOP
+		r := MOD(n, 10);
+		temp_sum := temp_sum + r;
+		n := Trunc(n / 10);
+	END LOOP;
+	dbms_output.Put_line('sum of digits = '|| temp_sum);
+END;
