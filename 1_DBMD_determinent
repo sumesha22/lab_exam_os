@@ -1,0 +1,16 @@
+DECLARE
+a number;
+b number;
+c number;
+d number;
+PROCEDURE det(x IN number, y IN number, z IN number, d OUT number) IS
+BEGIN
+d:=y*y-4*x*z;
+END;
+BEGIN
+a:=5;
+b:=10;
+c:=2;
+det(a,b,c,d);
+dbms_output.put_line('Determinant is'||d);
+END;
