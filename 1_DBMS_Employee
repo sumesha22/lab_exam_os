@@ -1,0 +1,61 @@
+a)  Find the names of all employees who work for SBI.
+
+SELECT emp_name FROM works,emp WHERE company_name='SBI'
+And emp.emp_id=works.emp_id;
+
+---------------------------------------------------------------
+
+b)Find all employees in the database who live in the same cities as the companies for  
+    which they work.
+
+   	SELECT emp.emp_name FROM emp, works,company WHERE 
+emp.emp_id = works. emp_id AND works. company_name= company.company_name AND emp.city = company.city 
+
+----------------------------------------------------------------------------------
+
+c)Find all employees and their managers in the database who live in the same cities and on the same street number as do their managers.
+
+SELECT emp.emp_name,e2.emp_name "manager name" FROM emp, emp e2,manages WHERE emp.emp_id = manages.emp_id AND
+e2.emp_id = manages.manager_id AND emp.street_no = e2.street_no AND emp.city = e2.city
+
+
+------------------------------------------------------------------------------------------------------------
+
+d) Find all employees who earn more than the average salary of all employees of their company.
+
+SELECT emp_name,emp.emp_id,salary FROM works ,emp WHERE salary > 
+(SELECT AVG (salary) FROM works S WHERE works.company_name
+ =S.company_name) and emp.emp_id=works.emp_id
+
+------------------------------------------------------------------------------------------------------------
+
+e). Find the company that pay least total salary along with the salary paid.
+SELECT company_name , SUM(salary) "SALARY PAID" FROM WORK GROUP BY company_name 
+HAVING SUM(salary) <= ALL (SELECT SUM(salary) FROM WORK GROUP BY company_name)
+
+-------------------------------------------------------------------------------------------------------------
+f.) Give all managers of SBI a 10 percent raise.
+
+UPDATE WORK SET salary = salary * 1.1 WHERE emp_id IN (SELECT manager_id FROM manages ) AND company_name = 'SBT'
+SELECT * FROM WORK
+
+
+----------------------------------------------------------------------------------------------------------------
+g). Find the company that has the most employees
+
+SELECT company_name FROM WORK GROUP BY company_name HAVING COUNT(DISTINCT emp_id) >= ALL (SELECT COUNT(DISTINCT emp_id) FROM WORK GROUP BY company_name)
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+h) Find those companies whose employees earn a higher salary, on average than the 
+               average salary at Indian Bank.
+
+SELECT company_name FROM WORK GROUP BY company_name HAVING AVG(salary) > (SELECT AVG(salary) 
+FROM WORK WHERE company_name = 'indian bank' GROUP BY company_name)COMPANY_NAME
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+ i).Query to find name and salary of  all employees who earn more than each employee 
+     of ‘Indian Bank’
+
+SELECT emp_name , salary FROM WORK , emp WHERE salary > (SELECT MAX(salary) FROM WORK WHERE 
+company_name = 'indian bank' GROUP BY company_name) AND emp.emp_id = work.emp_id
