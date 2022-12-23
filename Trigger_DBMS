@@ -1,0 +1,24 @@
+CREATE TABLE phonebook(
+  pname varchar(15),
+  phone_no int);
+ 
+CREATE TABLE del_phonebook(
+  pname varchar(15),
+  phone_no int,
+  modify_date date);
+INSERT into phonebook values('sam',3465687889)
+INSERT into phonebook values('Ryan',788934566)
+INSERT into phonebook values('Aditi',346912468)
+INSERT into phonebook values('Nomita',855469980)
+INSERT into phonebook values('Taran',9877667442)
+
+CREATE OR REPLACE TRIGGER save old mob
+AFTER DELETE
+ON phonebook
+FOR EACH ROW
+DECLARE
+BEGIN 
+INSERT INTO del_phonebook values(:OLD.pname;:OLD.mobno,sysdate)
+END;
+
+DELETE from phonebook where pname='Jain':
