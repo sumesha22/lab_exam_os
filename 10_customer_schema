@@ -1,0 +1,37 @@
+CREATE TABLE customer (
+    customer_id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    registered_date DATE NOT NULL,
+    shopping_date DATE NOT NULL,
+    PRIMARY KEY (customer_id)
+);
+
+INSERT INTO customer (id, name, city, registered_date, shopping_date)
+VALUES (1, 'John Doe', 'New York', '2021-12-01', '2021-12-20'),
+       (2, 'Jane Doe', 'London', '2021-01-15', '2021-01-30'),
+       (3, 'John Smith', 'Paris', '2021-12-15', '2022-01-05');
+
+---------------------------------------------------------------------------------------------
+
+(i).  Find the name of all customers
+
+SELECT name FROM customer;
+
+(ii). Find the names of all customers who registered in December or January.
+
+SELECT name
+FROM customer
+WHERE MONTH(registered_date) = 12 OR MONTH(registered_date) = 1;
+
+(iii). Find the details of the customers who shopped in December and January.
+
+SELECT id, name, city
+FROM customer
+WHERE MONTH(shopping_date) IN (12, 1);
+
+(iv). Find the details of the customer who shopped only in December but not in janauary.
+
+SELECT *
+FROM customer
+WHERE (shopping_month = 'December') AND (shopping_month != 'January');
