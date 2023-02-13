@@ -1,0 +1,31 @@
+CREATE TABLE customer_details (
+  customer_id INT NOT NULL,
+  cust_name VARCHAR(50) NOT NULL,
+  city VARCHAR(100) NOT NULL,
+  grade VARCHAR(15) NOT NULL,
+  salesman_id INT NOT NULL,
+  PRIMARY KEY (customer_id)
+);
+
+(i)   write my sql query to make alist in ascending order for customer who works either 
+      through a salesman or by own
+      
+SELECT customer_id, cust_name, city, grade, salesman_id
+FROM customer_details
+ORDER BY cust_name ASC;
+
+(ii)   write a my sql query to make a list of customers who was served by the same salesman
+
+SELECT salesman_id, COUNT(customer_id) AS number_of_customers
+FROM customer_details
+GROUP BY salesman_id
+HAVING COUNT(customer_id) > 1
+ORDER BY number_of_customers DESC;
+
+     or
+     
+SELECT salesman_id, COUNT(*) as customer_count
+FROM customer_details
+GROUP BY salesman_id
+HAVING COUNT(*) > 1
+
