@@ -1,0 +1,101 @@
+CREATE TABLE EMPLOYEE (
+  EMPLOYEE_ID INT NOT NULL,
+  F_NAME VARCHAR(50) NOT NULL,
+  L_NAME VARCHAR(50) NOT NULL,
+  EMAIL VARCHAR(100) NOT NULL,
+  PHONE_NO VARCHAR(15) NOT NULL,
+  JOB_ID VARCHAR(15) NOT NULL,
+  SALARY DECIMAL(10,2) NOT NULL,
+  MANAGER_ID INT,
+  PRIMARY KEY (EMPLOYEE_ID)
+);
+
+5.(i).write a query to retrieve the name of all employees greater than 25000/-
+
+SELECT F_NAME, L_NAME
+FROM EMPLOYEE
+WHERE SALARY > 25000;
+
+5(ii).write a query to get the average salary for each job ID excluding progger
+
+SELECT JOB_ID, AVG(SALARY)
+FROM EMPLOYEE
+WHERE JOB_ID != 'programmer'
+GROUP BY JOB_ID;
+
+-----------------------------------------------------------------------------------------
+6. 
+  CREATE TABLE department (
+  dept_id INT NOT NULL,
+  dept_no VARCHAR(50) NOT NULL,
+  location VARCHAR(100) NOT NULL,
+  mgr_id INT,
+  PRIMARY KEY (dept_id)
+);
+
+6(i). write a query to retrieve the name and email_id of employees whose department is located 
+      atDelhi    
+
+SELECT e.F_NAME, e.L_NAME, e.EMAIL
+FROM EMPLOYEE e
+JOIN department d ON e.JOB_ID = d.dept_id
+WHERE d.location = 'Delhi';
+
+6(ii).write a query to get total salary , maximum, minimum,average salary of employees.
+ 
+    SELECT
+    SUM(e.salary) AS Total_Salary,
+    MAX(e.salary) AS Maximum_Salary,
+    MIN(e.salary) AS Minimum_Salary,
+    AVG(e.salary) AS Average_Salary
+FROM
+    EMPLOYEE e;
+-------------------------------------------------------------------------------------
+8.
+   
+   CREATE TABLE works_for (
+   dept_id INT NOT NULL,
+   dept_name VARCHAR(50) NOT NULL,
+   mgr_ssn VARCHAR(50) NOT NULL,
+   emp_id INT NOT NULL,
+   PRIMARY KEY (dept_id, emp_id),
+   FOREIGN KEY (dept_id) REFERENCES department (dept_id),
+   FOREIGN KEY (emp_id) REFERENCES employee (employee_id)
+);   
+
+8.(i). write a query to find the name (first_name, last_name)and salary of the employees whose salary is 
+       greater than average salary. 
+
+SELECT first_name, last_name, salary
+FROM employee
+WHERE salary > (SELECT AVG(salary) FROM employee)
+
+8.(ii). write a query to retrieve the name of the department in which employee annie works.
+
+SELECT d.dept_name
+FROM department d
+JOIN employee e ON e.dept_id = d.dept_id
+WHERE e.first_name = 'Annie';
+
+    OR
+SELECT department.dept_name 
+FROM department 
+JOIN works_for 
+ON department.dept_id = works_for.dept_id 
+JOIN employee 
+ON employee.employee_id = works_for.emp_id 
+WHERE employee.f_name = 'Annie';
+
+---------------------------------------------------------------------------------------------
+9.(i). write a query to find the name(first_name,last_name)and salary of the employees who 
+       earn more than earning of Mr.bell
+
+SELECT F_NAME, L_NAME, SALARY
+FROM EMPLOYEE
+WHERE SALARY > (SELECT SALARY FROM EMPLOYEE WHERE F_NAME = 'Mr.' AND L_NAME = 'Bell');
+
+9.(ii). writev an sql query to find the sum of salaries of all employees.
+
+SELECT SUM(salary) as total_salary
+FROM employee;
+
