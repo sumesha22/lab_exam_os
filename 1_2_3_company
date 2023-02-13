@@ -1,0 +1,111 @@
+ CREATE TABLE works (
+    pname VARCHAR(255) NOT NULL,
+    cname VARCHAR(255) NOT NULL,
+    salary INT NOT NULL,
+    PRIMARY KEY (pname, cname),
+    FOREIGN KEY (pname) REFERENCES Lives(pname),
+    FOREIGN KEY (cname) REFERENCES Locatedin(cname)
+);
+
+CREATE TABLE Lives (
+    pname VARCHAR(255) NOT NULL,
+    street VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
+    PRIMARY KEY (pname),
+    FOREIGN KEY (pname) REFERENCES Manager(pname)
+);
+
+CREATE TABLE Locatedin (
+    cname VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
+    PRIMARY KEY (cname)
+);
+
+CREATE TABLE Manager (
+    pname VARCHAR(255) NOT NULL,
+    mgrname VARCHAR(255) NOT NULL,
+    PRIMARY KEY (pname)
+);
+
+----------------------------------------------------------------------------------------------------
+
+INSERT INTO works (pname, cname, salary)
+VALUES ('John Doe', 'ABC Corp', 50000),
+       ('Jane Doe', 'XYZ Inc', 55000),
+       ('Jim Smith', 'ABC Corp', 60000);
+
+INSERT INTO Lives (pname, street, city)
+VALUES ('John Doe', '123 Main St', 'New York'),
+       ('Jane Doe', '456 Oak Ave', 'San Francisco'),
+       ('Jim Smith', '789 Pine Rd', 'Chicago');
+
+INSERT INTO Locatedin (cname, city)
+VALUES ('ABC Corp', 'New York'),
+       ('XYZ Inc', 'San Francisco');
+
+INSERT INTO Manager (pname, mgrname)
+VALUES ('John Doe', 'Tom Brown'),
+       ('Jane Doe', 'Sarah Johnson'),
+       ('Jim Smith', 'James Wilson');
+       
+-------------------------------------------------------------------------------------------------
+
+1.(i). List the name of person who work for company wipro along with cities they live in.
+  
+SELECT Works.pname, Lives.city
+FROM Works
+JOIN Lives ON Works.pname = Lives.pname
+WHERE Works.cname = 'Wipro';
+
+
+1.(ii). Find the names of the person who do not work for infosys.
+
+SELECT pname
+FROM Works
+WHERE cname != 'Infosys';
+
+1.(iii). Find the name of companies that are located in every city where the company 
+         infosys is located
+         
+SELECT cname
+FROM Locatedin
+WHERE city IN (
+    SELECT city
+    FROM Locatedin
+    WHERE cname = 'Infosys'
+)
+AND cname != 'Infosys';
+
+-------------------------------------------------------------------------------------------------
+
+2.(i). Find the people who work for the company infosys with salary more than rs 50000.
+
+SELECT pname
+FROM Works
+WHERE cname = 'Infosys' AND salary > 50000;
+
+2.(ii). Find the persons salary whose salaries are more than that of all oracle employees.
+
+SELECT Works.pname, Works.salary
+FROM Works
+WHERE Works.salary > (SELECT MAX(salary) FROM Works WHERE cname = 'oracle');
+
+------------------------------------------------------------------------------------------------------
+
+3.(i).  List the name of people , along with streets and city addresses.
+
+SELECT pname, street, city
+FROM Lives;
+
+3.(ii).  Find the names of persons who live and work in same city.
+
+SELECT pname
+FROM Works
+JOIN Lives ON Works.pname = Lives.pname
+WHERE Works.cname = Locatedin.cname AND Lives.city = Locatedin.city
+
+
+
+
+
+  
