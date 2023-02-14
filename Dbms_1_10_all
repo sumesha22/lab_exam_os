@@ -1,0 +1,150 @@
+1 (i) SELECT works.pname, Lives.city
+FROM works
+JOIN Locatedin ON works.cname = Locatedin.cname
+JOIN Lives ON works.pname = Lives.pname
+WHERE Locatedin.cname = 'Wipro';
+
+
+1 (ii) SELECT pname
+FROM Lives
+WHERE pname NOT IN (
+SELECT pname
+FROM works
+JOIN Locatedin ON works.cname = Locatedin.cname
+WHERE Locatedin.cname = 'Infosys'
+);
+
+
+1 (iii) SELECT cname
+FROM Locatedin
+WHERE city IN (
+SELECT city
+FROM Locatedin
+WHERE cname = 'Infosys'
+) AND cname != 'Infosys';
+
+
+2 (i) SELECT pname
+FROM works
+WHERE cname = 'Infosys' AND salary > 50000;
+
+
+ 2(i)
+ SELECT pname
+FROM works
+WHERE salary > (
+SELECT salary
+FROM works
+WHERE cname = 'Oracle'
+LIMIT 1
+);
+
+
+3 (i) SELECT pname, street, city
+FROM Lives;
+
+
+3(ii) SELECT works.pname
+FROM works
+JOIN Locatedin ON works.cname = Locatedin.cname
+JOIN Lives ON works.pname = Lives.pname
+WHERE Locatedin.city = Lives.city;
+
+
+5,6,8,9 CREATE TABLE EMPLOYEE (
+EMPLOYEE_ID INT NOT NULL,
+F_NAME VARCHAR(50) NOT NULL,
+L_NAME VARCHAR(50) NOT NULL,
+EMAIL VARCHAR(100) NOT NULL,
+PHONE_NO VARCHAR(15) NOT NULL,
+JOB_ID VARCHAR(15) NOT NULL,
+SALARY DECIMAL(10,2) NOT NULL,
+MANAGER_ID INT,
+PRIMARY KEY (EMPLOYEE_ID)
+);
+
+5 (i) .SELECT F_NAME, L_NAME
+FROM EMPLOYEE
+WHERE SALARY > 25000;
+
+
+5(ii) .SELECT JOB_ID, AVG(SALARY)
+FROM EMPLOYEE
+Where JOB_ID ! = 'Programmer'
+GROUP BY JOB_ID;
+
+
+6. CREATE TABLE department (
+dept_id INT NOT NULL,
+dept_no VARCHAR(50) NOT NULL,
+location VARCHAR(100) NOT NULL,
+mgr_id INT,
+PRIMARY KEY (dept_id)
+);
+
+
+6(i). SELECT e.F_NAME, e.L_NAME, e.EMAIL
+FROM EMPLOYEE e
+JOIN department d ON e.JOB_ID = d.dept_id
+WHERE d.location = 'Delhi';
+
+
+6(ii). SELECT
+SUM(e.salary) AS Total_Salary,
+MAX(e.salary) AS Maximum_Salary,
+MIN(e.salary) AS Minimum_Salary,
+AVG(e.salary) AS Average_Salary
+FROM
+EMPLOYEE e;
+
+
+8. CREATE TABLE works_for (
+dept_id INT NOT NULL,
+dept_name VARCHAR(50) NOT NULL,
+mgr_ssn VARCHAR(50) NOT NULL,
+emp_id INT NOT NULL,
+PRIMARY KEY (dept_id, emp_id),
+FOREIGN KEY (dept_id) REFERENCES department (dept_id),
+FOREIGN KEY (emp_id) REFERENCES employee (employee_id)
+);
+
+
+8(i) SELECT first_name, last_name, salary
+FROM employee
+WHERE salary > (SELECT AVG(salary) FROM employee)
+
+
+8(ii) SELECT d.dept_name
+FROM department d
+JOIN employee e ON e.dept_id = d.dept_id
+WHERE e.first_name = 'Annie';
+
+
+9. (i) SELECT F_NAME, L_NAME, SALARY
+FROM EMPLOYEE
+WHERE SALARY > (SELECT SALARY FROM EMPLOYEE WHERE F_NAME = 'Mr.' AND
+L_NAME = 'Bell');
+
+
+9 (ii) SELECT SUM(salary) as total_salary
+FROM employee;
+
+10. CREATE TABLE customers (
+customer_id INT PRIMARY KEY,
+name VARCHAR(50),
+city VARCHAR(50),
+month_of_purchase VARCHAR(50)
+);
+
+
+(i) SELECT customer_id, name, city
+FROM customers
+WHERE month_of_purchase IN ('December', 'January');
+
+(i)SELECT name FROM customer WHERE purchase_month IN ('December', 'January');
+
+(ii)SELECT name
+FROM customer
+WHERE city = 'december' OR city = 'january';(iii) SELECT customer_id, name, city
+FROM customers
+WHERE (month_of_purchase = 'December' AND NOT month_of_purchase = 'January')
